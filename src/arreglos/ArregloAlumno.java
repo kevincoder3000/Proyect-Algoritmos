@@ -13,7 +13,7 @@ public class ArregloAlumno {
 		alumnos = new ArrayList<Alumno>();
 	}
 
-	// Adiciona un alumno solamente si el DNI no estï¿½ repetido
+	// Adiciona un alumno solamente si el DNI no está repetido
 	public boolean adicionar(Alumno alumno) 
 	{	if (buscarDni(alumno.getDni()) == null) 
 			{alumnos.add(alumno);
@@ -22,14 +22,14 @@ public class ArregloAlumno {
 	}
 
 	// Retorna la cantidad de alumnos
-	public int tamanio() 
+	public int tamaño() 
 	{return alumnos.size();	}
 
-	// Retorna un alumno segï¿½n su posiciï¿½n
+	// Retorna un alumno según su posición
 	public Alumno obtener(int posicion) 
 	{return alumnos.get(posicion);}
 
-	// Busca un alumno por su cï¿½digo
+	// Busca un alumno por su código
 	public Alumno buscar(int codAlumno) 
 	{	for (Alumno alumno : alumnos) 
 			{if (alumno.getCodAlumno() == codAlumno) 

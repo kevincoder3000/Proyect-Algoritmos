@@ -12,7 +12,7 @@ public class ArregloRetiro {
 		retiros = new ArrayList<Retiro>();
 	}
 
-	// Adiciona un retiro evitando repetir la matrï¿½cula
+	// Adiciona un retiro evitando repetir la matrícula
 	public boolean adicionar(Retiro retiro) 
 	{if (buscarPorMatricula(retiro.getNumMatricula()) != null) 
 		{return false;}
@@ -21,14 +21,14 @@ public class ArregloRetiro {
 	}
 
 	// Retorna la cantidad de retiros
-	public int tamanio() 
+	public int tamaño() 
 	{return retiros.size();}
 
-	// Retorna un retiro segï¿½n su posiciï¿½n
+	// Retorna un retiro según su posición
 	public Retiro obtener(int posicion) 
 	{return retiros.get(posicion);}
 
-	// Busca por nï¿½mero de retiro
+	// Busca por número de retiro
 	public Retiro buscar(int numRetiro) 
 	{for (Retiro retiro : retiros) 
 		{if (retiro.getNumRetiro() == numRetiro) 
@@ -37,7 +37,7 @@ public class ArregloRetiro {
 		return null;
 	}
 
-	// Busca por nï¿½mero de matrï¿½cula
+	// Busca por número de matrícula
 	public Retiro buscarPorMatricula(int numMatricula) 
 	{for (Retiro retiro : retiros) 
 		{if (retiro.getNumMatricula() == numMatricula) 
@@ -46,7 +46,7 @@ public class ArregloRetiro {
 		return null;
 	}
 
-	// Elimina fï¿½sicamente un retiro
+	// Elimina físicamente un retiro
 	public void eliminar(Retiro retiro)
 	{retiros.remove(retiro);}
 }
