@@ -68,7 +68,7 @@ public class MantenimientoAlumno {
 		frmMantenimientoAlumno.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmMantenimientoAlumno.getContentPane().setLayout(null);
 
-		JLabel lblCodigo = new JLabel("Código:");
+		JLabel lblCodigo = new JLabel("Cï¿½digo:");
 		lblCodigo.setBounds(22, 18, 90, 25);
 		frmMantenimientoAlumno.getContentPane().add(lblCodigo);
 
@@ -140,7 +140,7 @@ public class MantenimientoAlumno {
 		frmMantenimientoAlumno.getContentPane().add(scrollPane);
 
 		modelo = new DefaultTableModel();
-		modelo.addColumn("Código");
+		modelo.addColumn("Cï¿½digo");
 		modelo.addColumn("Nombres");
 		modelo.addColumn("Apellidos");
 		modelo.addColumn("DNI");
@@ -152,15 +152,15 @@ public class MantenimientoAlumno {
 		scrollPane.setViewportView(table);
 	}
 
-	// ================== LÓGICA DE LOS BOTONES ==================
+	// ================== Lï¿½GICA DE LOS BOTONES ==================
 
-	// Adicionar: el código y el estado los asigna el sistema
+	// Adicionar: el cï¿½digo y el estado los asigna el sistema
 	private void adicionar() {
 		if (!datosValidos()) return;
 
 		String dni = txtDNI.getText().trim();
 		if (Principal.aa.buscarDni(dni) != null) {
-			mensaje("Ese DNI ya está registrado.");
+			mensaje("Ese DNI ya estï¿½ registrado.");
 			txtDNI.requestFocus();
 			return;
 		}
@@ -176,10 +176,10 @@ public class MantenimientoAlumno {
 
 		listar();
 		limpiar();
-		mensaje("Alumno registrado con código " + x.getCodAlumno());
+		mensaje("Alumno registrado con cï¿½digo " + x.getCodAlumno());
 	}
 
-	// Consultar: busca por el código escrito y muestra los datos
+	// Consultar: busca por el cï¿½digo escrito y muestra los datos
 	private void consultar() {
 		Alumno x = buscarPorCodigo();
 		if (x == null) return;
@@ -217,13 +217,13 @@ public class MantenimientoAlumno {
 		mensaje("Alumno modificado.");
 	}
 
-	// Eliminar: pide confirmación
+	// Eliminar: pide confirmaciï¿½n
 	private void eliminar() {
 		Alumno x = buscarPorCodigo();
 		if (x == null) return;
 
 		int r = JOptionPane.showConfirmDialog(frmMantenimientoAlumno,
-				"¿Eliminar a " + x.getNombres() + " " + x.getApellidos() + "?",
+				"ï¿½Eliminar a " + x.getNombres() + " " + x.getApellidos() + "?",
 				"Confirmar", JOptionPane.YES_NO_OPTION);
 		if (r == JOptionPane.YES_OPTION) {
 			Principal.aa.eliminar(x);
@@ -232,12 +232,12 @@ public class MantenimientoAlumno {
 		}
 	}
 
-	// ================== MÉTODOS AUXILIARES ==================
+	// ================== Mï¿½TODOS AUXILIARES ==================
 
 	// Llena la tabla con todos los alumnos
 	private void listar() {
 		modelo.setRowCount(0);
-		for (int i = 0; i < Principal.aa.tamaño(); i++) {
+		for (int i = 0; i < Principal.aa.tamanio(); i++) {
 			Alumno x = Principal.aa.obtener(i);
 			Object[] fila = { x.getCodAlumno(), x.getNombres(), x.getApellidos(),
 					x.getDni(), x.getEdad(), x.getCelular(), x.estadoAlumno() };
@@ -257,19 +257,19 @@ public class MantenimientoAlumno {
 		txtCodigo.requestFocus();
 	}
 
-	// Busca el alumno cuyo código está escrito en txtCodigo
+	// Busca el alumno cuyo cï¿½digo estï¿½ escrito en txtCodigo
 	private Alumno buscarPorCodigo() {
 		int codigo;
 		try {
 			codigo = Integer.parseInt(txtCodigo.getText().trim());
 		} catch (NumberFormatException ex) {
-			mensaje("Ingrese un código válido.");
+			mensaje("Ingrese un cï¿½digo vï¿½lido.");
 			txtCodigo.requestFocus();
 			return null;
 		}
 		Alumno x = Principal.aa.buscar(codigo);
 		if (x == null) {
-			mensaje("No existe un alumno con ese código.");
+			mensaje("No existe un alumno con ese cï¿½digo.");
 			txtCodigo.requestFocus();
 		}
 		return x;
@@ -288,17 +288,17 @@ public class MantenimientoAlumno {
 			return false;
 		}
 		if (!txtDNI.getText().trim().matches("\\d{8}")) {
-			mensaje("El DNI debe tener 8 dígitos.");
+			mensaje("El DNI debe tener 8 dï¿½gitos.");
 			txtDNI.requestFocus();
 			return false;
 		}
 		if (!txtEdad.getText().trim().matches("\\d{1,3}")) {
-			mensaje("Ingrese una edad válida.");
+			mensaje("Ingrese una edad vï¿½lida.");
 			txtEdad.requestFocus();
 			return false;
 		}
 		if (!txtCelular.getText().trim().matches("\\d{9}")) {
-			mensaje("El celular debe tener 9 dígitos.");
+			mensaje("El celular debe tener 9 dï¿½gitos.");
 			txtCelular.requestFocus();
 			return false;
 		}

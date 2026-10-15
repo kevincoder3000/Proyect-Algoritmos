@@ -14,15 +14,15 @@ public class ArregloCurso
 	public ArregloCurso() 
 	{cursos = new ArrayList<Curso>();}
 
-	// Adiciona un curso si el código es válido y no está repetido
+	// Adiciona un curso si el cï¿½digo es vï¿½lido y no estï¿½ repetido
 	public boolean adicionar(Curso curso) 
 	{int codigo = curso.getCodCurso();
 
-		// El código debe tener cuatro dígitos
+		// El cï¿½digo debe tener cuatro dï¿½gitos
 		if (codigo < 1000 || codigo > 9999)
 			{return false;}
 
-		// El código no debe estar repetido
+		// El cï¿½digo no debe estar repetido
 		if (buscar(codigo) != null) 
 		{return false;}
 		cursos.add(curso);
@@ -31,14 +31,14 @@ public class ArregloCurso
 	}
 
 	// Retorna la cantidad de cursos
-	public int tamaño() 
+	public int tamanio() 
 	{return cursos.size();}
 
-	// Retorna un curso según su posición
+	// Retorna un curso segï¿½n su posiciï¿½n
 	public Curso obtener(int posicion) 
 	{return cursos.get(posicion);}
 
-	// Busca un curso por su código
+	// Busca un curso por su cï¿½digo
 	public Curso buscar(int codCurso)
 	{for (Curso curso : cursos) 
 		{if (curso.getCodCurso() == codCurso) 
@@ -50,7 +50,7 @@ public class ArregloCurso
 	public void eliminar(Curso curso) 
 	{cursos.remove(curso);}
 
-	// Ordena los cursos de menor a mayor según su código
+	// Ordena los cursos de menor a mayor segï¿½n su cï¿½digo
 	private void ordenar() 
 	{Collections.sort(cursos, new Comparator<Curso>() 
 		{@Override

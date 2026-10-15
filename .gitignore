@@ -1,0 +1,8 @@
+# Eclipse workspace metadata
+.metadata/
+bin/
+
+# Eclipse project files (si prefieres que cada quien genere los suyos)
+.classpath
+.project
+.settings/

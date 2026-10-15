@@ -6,14 +6,14 @@ import entidad.Matricula;
 
 public class ArregloMatricula {
 
-	// Lista que almacena las matrículas
+	// Lista que almacena las matrï¿½culas
 	private ArrayList<Matricula> matriculas;
 
 	// Constructor
 	public ArregloMatricula() 
 	{matriculas = new ArrayList<Matricula>();}
 
-	// Adiciona una matrícula si el alumno no está matriculado
+	// Adiciona una matrï¿½cula si el alumno no estï¿½ matriculado
 	public boolean adicionar(Matricula matricula) 
 	{int codAlumno = matricula.getCodAlumno();
 
@@ -25,15 +25,15 @@ public class ArregloMatricula {
 		return true;
 	}
 
-	// Retorna la cantidad de matrículas
-	public int tamaño() 
+	// Retorna la cantidad de matrï¿½culas
+	public int tamanio() 
 	{return matriculas.size();}
 
-	// Retorna una matrícula según su posición
+	// Retorna una matrï¿½cula segï¿½n su posiciï¿½n
 	public Matricula obtener(int posicion) 
 	{return matriculas.get(posicion);}
 
-	// Busca una matrícula por su número
+	// Busca una matrï¿½cula por su nï¿½mero
 	public Matricula buscar(int numMatricula) 
 	{for (Matricula matricula : matriculas) 
 		{if (matricula.getNumMatricula() == numMatricula) 
@@ -41,7 +41,7 @@ public class ArregloMatricula {
 		return null;
 	}
 
-	// Busca la matrícula de un alumno
+	// Busca la matrï¿½cula de un alumno
 	public Matricula buscarPorAlumno(int codAlumno) 
 	{for (Matricula matricula : matriculas) 
 	{if (matricula.getCodAlumno() == codAlumno) 
@@ -49,7 +49,7 @@ public class ArregloMatricula {
 		return null;
 	}
 
-	// Busca la primera matrícula correspondiente a un curso
+	// Busca la primera matrï¿½cula correspondiente a un curso
 	public Matricula buscarPorCurso(int codCurso) 
 	{for (Matricula matricula : matriculas) {
 			if (matricula.getCodCurso() == codCurso) {
@@ -57,11 +57,11 @@ public class ArregloMatricula {
 		return null;
 	}
 
-	 // Modifica solamente el curso de una matrícula
+	 // Modifica solamente el curso de una matrï¿½cula
     public void modificarCurso(Matricula matricula, int nuevoCodCurso) 
     { matricula.setCodCurso(nuevoCodCurso);}
 	
-	// Elimina físicamente una matrícula
+	// Elimina fï¿½sicamente una matrï¿½cula
 	public void eliminar(Matricula matricula) 
 	{matriculas.remove(matricula);}
 }
