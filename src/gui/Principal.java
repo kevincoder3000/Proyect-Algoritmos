@@ -1,14 +1,21 @@
 package gui;
 
 import java.awt.EventQueue;
+import arreglos.ArregloAlumno;
+import arreglos.ArregloCurso;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
-public class Principal {
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
+public class Principal {
+	public static ArregloAlumno aa = new ArregloAlumno();
+	public static ArregloCurso ac = new ArregloCurso();
+	
 	private JFrame frmSistemaDeRegistro;
 
 	/**
@@ -49,10 +56,14 @@ public class Principal {
 		JMenu mnMantenimiento = new JMenu("Mantenimiento");
 		menuBar.add(mnMantenimiento);
 		
-		JMenuItem mntmAlumno = new JMenuItem("Alumno");
-		mnMantenimiento.add(mntmAlumno);
+		
 		
 		JMenuItem mntmCurso = new JMenuItem("Curso");
+		mntmCurso.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new MantenimientoCurso().setVisible(true);
+			}
+		});
 		mnMantenimiento.add(mntmCurso);
 		
 		JMenu mnRegistro = new JMenu("Registro");
@@ -67,8 +78,13 @@ public class Principal {
 		JMenu mnConsulta = new JMenu("Consulta");
 		menuBar.add(mnConsulta);
 		
-		JMenuItem mntmAlumnosCursos = new JMenuItem("Alumnos y Cursos");
-		mnConsulta.add(mntmAlumnosCursos);
+		JMenuItem mntmAlumno = new JMenuItem("Alumno");
+		mntmAlumno.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new MantenimientoAlumno().setVisible(true);
+			}
+		});
+		mnMantenimiento.add(mntmAlumno);
 		
 		JMenuItem mntmMatriculasRetiros = new JMenuItem("Matr\u00EDculas y retiros");
 		mnConsulta.add(mntmMatriculasRetiros);

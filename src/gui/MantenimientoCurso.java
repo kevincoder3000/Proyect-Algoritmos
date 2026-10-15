@@ -1,24 +1,31 @@
 package gui;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+
+import entidad.Curso;
 
 public class MantenimientoCurso {
 
 	private JFrame frmMantenimientoDeCursos;
 	private JTextField txtCodigo;
 	private JTextField txtAsignatura;
-	private JTextField txtCiclo;
+	private JComboBox<String> cboCiclo;
 	private JTextField txtCreditos;
 	private JTextField txtHoras;
 	private JTable table;
+	private DefaultTableModel modelo;
 
 	/**
 	 * Launch the application.
@@ -41,6 +48,12 @@ public class MantenimientoCurso {
 	 */
 	public MantenimientoCurso() {
 		initialize();
+		listar();
+	}
+
+	// Permite abrir la ventana desde Principal: new MantenimientoCurso().setVisible(true);
+	public void setVisible(boolean visible) {
+		frmMantenimientoDeCursos.setVisible(visible);
 	}
 
 	/**
@@ -50,7 +63,8 @@ public class MantenimientoCurso {
 		frmMantenimientoDeCursos = new JFrame();
 		frmMantenimientoDeCursos.setTitle("Mantenimiento de Cursos");
 		frmMantenimientoDeCursos.setBounds(100, 100, 511, 335);
-		frmMantenimientoDeCursos.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// DISPOSE: al cerrar esta ventana no se cierra todo el programa
+		frmMantenimientoDeCursos.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmMantenimientoDeCursos.getContentPane().setLayout(null);
 
 		JLabel lblCodigo = new JLabel("Código:");
@@ -83,10 +97,11 @@ public class MantenimientoCurso {
 		frmMantenimientoDeCursos.getContentPane().add(txtAsignatura);
 		txtAsignatura.setColumns(10);
 
-		txtCiclo = new JTextField();
-		txtCiclo.setColumns(10);
-		txtCiclo.setBounds(118, 61, 119, 18);
-		frmMantenimientoDeCursos.getContentPane().add(txtCiclo);
+		// Combo de ciclo: la posición (0 a 5) es el número que guarda Curso
+		cboCiclo = new JComboBox<String>(new String[] {
+				"Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto" });
+		cboCiclo.setBounds(118, 61, 119, 18);
+		frmMantenimientoDeCursos.getContentPane().add(cboCiclo);
 
 		txtCreditos = new JTextField();
 		txtCreditos.setColumns(10);
@@ -98,36 +113,203 @@ public class MantenimientoCurso {
 		txtHoras.setBounds(118, 105, 119, 18);
 		frmMantenimientoDeCursos.getContentPane().add(txtHoras);
 
+		// ---------- Botones ----------
 		JButton btnAdicionar = new JButton("Adicionar");
+		btnAdicionar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				adicionar();
+			}
+		});
 		btnAdicionar.setBounds(10, 140, 90, 20);
 		frmMantenimientoDeCursos.getContentPane().add(btnAdicionar);
 
 		JButton btnConsultar = new JButton("Consultar");
+		btnConsultar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				consultar();
+			}
+		});
 		btnConsultar.setBounds(105, 140, 90, 20);
 		frmMantenimientoDeCursos.getContentPane().add(btnConsultar);
 
 		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				modificar();
+			}
+		});
 		btnModificar.setBounds(201, 140, 90, 20);
 		frmMantenimientoDeCursos.getContentPane().add(btnModificar);
 
 		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				eliminar();
+			}
+		});
 		btnEliminar.setBounds(295, 140, 90, 20);
 		frmMantenimientoDeCursos.getContentPane().add(btnEliminar);
 
 		JButton btnCerrar = new JButton("Cerrar");
+		btnCerrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frmMantenimientoDeCursos.dispose();
+			}
+		});
 		btnCerrar.setBounds(394, 140, 90, 20);
 		frmMantenimientoDeCursos.getContentPane().add(btnCerrar);
 
+		// ---------- Tabla ----------
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 170, 474, 106);
 		frmMantenimientoDeCursos.getContentPane().add(scrollPane);
 
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
-				new Object[][] { { null, null, null, null, null }, { null, null, null, null, null },
-						{ null, null, null, null, null }, { null, null, null, null, null },
-						{ null, null, null, null, null }, },
-				new String[] { "C\u00F3digo", "Asignatura", "Ciclo", "Cr\u00E9ditos", "Horas" }));
+		modelo = new DefaultTableModel();
+		modelo.addColumn("Código");
+		modelo.addColumn("Asignatura");
+		modelo.addColumn("Ciclo");
+		modelo.addColumn("Créditos");
+		modelo.addColumn("Horas");
+
+		table = new JTable(modelo);
 		scrollPane.setViewportView(table);
+	}
+
+	// ================== LÓGICA DE LOS BOTONES ==================
+
+	// Adicionar: el código se escribe y debe tener 4 dígitos
+	private void adicionar() {
+		if (!txtCodigo.getText().trim().matches("\\d{4}")) {
+			mensaje("El código debe tener 4 dígitos (1000 a 9999).");
+			txtCodigo.requestFocus();
+			return;
+		}
+		int codigo = Integer.parseInt(txtCodigo.getText().trim());
+
+		if (Principal.ac.buscar(codigo) != null) {
+			mensaje("Ese código ya está registrado.");
+			txtCodigo.requestFocus();
+			return;
+		}
+		if (!datosValidos()) return;
+
+		Curso x = new Curso(codigo,
+				txtAsignatura.getText().trim(),
+				cboCiclo.getSelectedIndex(),
+				Integer.parseInt(txtCreditos.getText().trim()),
+				Integer.parseInt(txtHoras.getText().trim()));
+		Principal.ac.adicionar(x);
+
+		listar();
+		limpiar();
+		mensaje("Curso registrado.");
+	}
+
+	// Consultar: busca por el código escrito y muestra los datos
+	private void consultar() {
+		Curso x = buscarPorCodigo();
+		if (x == null) return;
+
+		txtAsignatura.setText(x.getAsignatura());
+		cboCiclo.setSelectedIndex(x.getCiclo());
+		txtCreditos.setText("" + x.getCreditos());
+		txtHoras.setText("" + x.getHora());
+	}
+
+	// Modificar: primero Consultar, cambia los datos y luego Modificar
+	// (el código no se puede cambiar)
+	private void modificar() {
+		Curso x = buscarPorCodigo();
+		if (x == null) return;
+		if (!datosValidos()) return;
+
+		x.setAsignatura(txtAsignatura.getText().trim());
+		x.setCiclo(cboCiclo.getSelectedIndex());
+		x.setCreditos(Integer.parseInt(txtCreditos.getText().trim()));
+		x.setHora(Integer.parseInt(txtHoras.getText().trim()));
+
+		listar();
+		limpiar();
+		mensaje("Curso modificado.");
+	}
+
+	// Eliminar: pide confirmación
+	private void eliminar() {
+		Curso x = buscarPorCodigo();
+		if (x == null) return;
+
+		int r = JOptionPane.showConfirmDialog(frmMantenimientoDeCursos,
+				"¿Eliminar el curso " + x.getAsignatura() + "?",
+				"Confirmar", JOptionPane.YES_NO_OPTION);
+		if (r == JOptionPane.YES_OPTION) {
+			Principal.ac.eliminar(x);
+			listar();
+			limpiar();
+		}
+	}
+
+	// ================== MÉTODOS AUXILIARES ==================
+
+	// Llena la tabla con todos los cursos
+	private void listar() {
+		modelo.setRowCount(0);
+		for (int i = 0; i < Principal.ac.tamaño(); i++) {
+			Curso x = Principal.ac.obtener(i);
+			Object[] fila = { x.getCodCurso(), x.getAsignatura(), x.numCiclo(),
+					x.getCreditos(), x.getHora() };
+			modelo.addRow(fila);
+		}
+	}
+
+	// Limpia las cajas de texto
+	private void limpiar() {
+		txtCodigo.setText("");
+		txtAsignatura.setText("");
+		cboCiclo.setSelectedIndex(0);
+		txtCreditos.setText("");
+		txtHoras.setText("");
+		txtCodigo.requestFocus();
+	}
+
+	// Busca el curso cuyo código está escrito en txtCodigo
+	private Curso buscarPorCodigo() {
+		int codigo;
+		try {
+			codigo = Integer.parseInt(txtCodigo.getText().trim());
+		} catch (NumberFormatException ex) {
+			mensaje("Ingrese un código válido.");
+			txtCodigo.requestFocus();
+			return null;
+		}
+		Curso x = Principal.ac.buscar(codigo);
+		if (x == null) {
+			mensaje("No existe un curso con ese código.");
+			txtCodigo.requestFocus();
+		}
+		return x;
+	}
+
+	// Revisa que los datos escritos sean correctos
+	private boolean datosValidos() {
+		if (txtAsignatura.getText().trim().isEmpty()) {
+			mensaje("Ingrese la asignatura.");
+			txtAsignatura.requestFocus();
+			return false;
+		}
+		if (!txtCreditos.getText().trim().matches("\\d{1,2}")) {
+			mensaje("Ingrese los créditos (solo números).");
+			txtCreditos.requestFocus();
+			return false;
+		}
+		if (!txtHoras.getText().trim().matches("\\d{1,2}")) {
+			mensaje("Ingrese las horas (solo números).");
+			txtHoras.requestFocus();
+			return false;
+		}
+		return true;
+	}
+
+	private void mensaje(String texto) {
+		JOptionPane.showMessageDialog(frmMantenimientoDeCursos, texto);
 	}
 }
